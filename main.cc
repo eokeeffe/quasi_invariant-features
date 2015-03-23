@@ -34,7 +34,7 @@ cv::Mat BoostMatrix(cv::Mat image,int order,float sigma)
         cv::filter2D(R, R, R.depth() , by, cv::Point(-1,-1), 0.0, cv::BORDER_DEFAULT);
     }
 
-    cv::Mat M(3,3,CV_64F),W,U,V,S(3,3,CV_64F);
+    cv::Mat M(3,3,CV_64F),W,U,V,S=Mat::zeros(3,3,CV_64F);
 
     M.at<float>(0,0) = cv::sum(R.mul(R))[0];
     M.at<float>(0,1) = cv::sum(R.mul(G))[0];
@@ -54,14 +54,21 @@ cv::Mat BoostMatrix(cv::Mat image,int order,float sigma)
 
     SVD::compute(M,W,U,V);
     //Put values of W onto Diagonal of S
-    S.at<double>(0,0) = W.at<double>(0);
-    S.at<double>(1,1) = W.at<double>(1);
-    S.at<double>(2,2) = W.at<double>(2);
+    double S1 = 1.0/sqrt(W.at<double>(0));
+    double S2 = 1.0/sqrt(W.at<double>(1));
+    double S3 = 1.0/sqrt(W.at<double>(2));
+    if(std::isfinite(S1)){S.at<double>(0,0) = S1;}
+    if(std::isfinite(S2)){S.at<double>(1,1) = S2;}
+    if(std::isfinite(S3)){S.at<double>(2,2) = S3;}
 
     //mboost = U * (diag(1./diag(sqrt(S)))*V');
-    cv::sqrt(S,S);
-    S = 1./S;
-    return U*(S)*V.t();
+    cv::Mat SVt = Mat::ones(3,3,CV_64F);
+    cv::Mat result = S*V.t();
+    SVt.at<double>(0,0) = result.at<double>(0,0);
+    SVt.at<double>(1,1) = result.at<double>(1,1);
+    SVt.at<double>(2,2) = result.at<double>(2,2);
+    std::cout<<SVt<<std::endl;
+    return U * SVt;
 }
 
 cv::Mat applyBoostMatrix(cv::Mat image, cv::Mat Mboost)
@@ -79,9 +86,9 @@ cv::Mat applyBoostMatrix(cv::Mat image, cv::Mat Mboost)
 
     //Put the RGB channels back together
     std::vector<cv::Mat> array_to_merge;
-    array_to_merge.push_back(R);
-    array_to_merge.push_back(G);
     array_to_merge.push_back(B);
+    array_to_merge.push_back(G);
+    array_to_merge.push_back(R);
     cv::merge(array_to_merge, colour_boost);
 
     return colour_boost;
@@ -94,7 +101,7 @@ int main(int argc, char** argv)
 
     std::cout << "Read Image and converted to double" << std::endl;
 
-    cv::Mat mboost = BoostMatrix(img,1,0.5);
+    cv::Mat mboost = BoostMatrix(img,0,0.5);
 
     std::cout << mboost << std::endl;
 
