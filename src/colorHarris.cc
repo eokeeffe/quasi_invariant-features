@@ -16,7 +16,7 @@
     %   Photometric Invariant Features from the Color Tensor, IEEE Trans. Image Processing, vol. 15 (1), January 2006.
 */
 
-#include "colorHarris.h"
+#include <colorHarris.h>
 
 cv::Mat colorHarris(cv::Mat in, double sigma_g, double sigma_a, double k, int method)
 {

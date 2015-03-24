@@ -24,8 +24,8 @@
     Created by Evan O'Keeffe
 */
 
-#include "spherical_der.h"
-#include "gder.h"
+#include <spherical_der.h>
+#include <gder.h>
 
 std::vector<cv::Mat> spherical_der(cv::Mat input, double sigma)
 {

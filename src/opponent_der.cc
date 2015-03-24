@@ -20,8 +20,8 @@
     Created by Evan O'Keeffe
 */
 
-#include "opponent_der.h"
-#include "gder.h"
+#include <opponent_der.h>
+#include <gder.h>
 
 std::vector<cv::Mat> opponent_der(cv::Mat input,double sigma)
 {
@@ -56,8 +56,8 @@ std::vector<cv::Mat> opponent_der(cv::Mat input,double sigma)
     O3_x = (Rx+Gx+Bx)/sqrt(3);
     O3_y = (Ry+Gy+By)/sqrt(3);
 
-    sqrt(O1_x.mul(O1_x)+O1_y.mul(O1_y)+O2_x.mul(O2_x)+O2_y.mul(O2_y)+eps,ss_inv);
-    sqrt(O3_x.mul(O3_x)+O3_y.mul(O3_y)+eps,ss_var);
+    cv::sqrt(O1_x.mul(O1_x)+O1_y.mul(O1_y)+O2_x.mul(O2_x)+O2_y.mul(O2_y)+eps,ss_inv);
+    cv::sqrt(O3_x.mul(O3_x)+O3_y.mul(O3_y)+eps,ss_var);
 
     std::vector<cv::Mat> ss;
     ss.push_back(ss_inv);

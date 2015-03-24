@@ -21,8 +21,8 @@
 
     Created by Evan O'Keeffe
 */
-#include "HSI_der.h"
-#include "gder.h"
+#include <HSI_der.h>
+#include <gder.h>
 
 std::vector<cv::Mat> HSI_der(cv::Mat input,double sigma)
 {

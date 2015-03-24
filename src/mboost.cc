@@ -2,8 +2,8 @@
 *   Created By Evan O'Keeffe
 */
 
-#include "mboost.h"
-#include "gder.h"
+#include <mboost.h>
+#include <gder.h>
 
 cv::Mat BoostMatrix(cv::Mat image,int order,float sigma)
 {

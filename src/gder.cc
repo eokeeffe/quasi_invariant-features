@@ -2,7 +2,7 @@
 *    Creating Gaussian Derivatives for images
 */
 
-#include "gder.h"
+#include <gder.h>
 
 cv::Mat fill_border(cv::Mat in, int bw)
 {

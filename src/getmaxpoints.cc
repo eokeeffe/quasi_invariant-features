@@ -57,7 +57,7 @@ maxpoints getmaxpoints(cv::Mat in,int nPoints,double sigma)
     {
         minMaxLoc( copyIn, &minVal, &maxVal, &minLoc, &maxLoc );
     }
-    
+
 
     return maxpoints();
 }

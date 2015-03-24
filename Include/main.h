@@ -11,5 +11,9 @@
 #include "gder.h"
 #include "mboost.h"
 
+#include "spherical_der.h"
+#include "opponent_der.h"
+#include "HSI_der.h"
+
 using namespace std;
 using namespace cv;
