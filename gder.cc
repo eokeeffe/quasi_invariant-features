@@ -53,6 +53,7 @@ cv::Mat gder(cv::Mat f, float sigma, int iorder, int jorder)
     float break_off_sigma = 3.0;
     float filtersize = floor(break_off_sigma*sigma+0.5);
 
+    //checked the differences, I don't know why it's there ?
     //f = fill_border(f,filtersize);
 
     int counter=0;
@@ -82,7 +83,7 @@ cv::Mat gder(cv::Mat f, float sigma, int iorder, int jorder)
         case 1:
         {
             Gx = -( x / (sigma*sigma) ).mul(Gauss);
-            Gx = Gx / (cv::sum(cv::sum(x.mul(Gx))))[0];
+            Gx = Gx / (cv::sum(x.mul(Gx)))[0];
             break;
         }
         case 2:

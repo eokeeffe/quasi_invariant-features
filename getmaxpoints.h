@@ -1,0 +1,7 @@
+
+class maxpoints
+{
+public:
+    
+private:
+};
