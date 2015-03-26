@@ -26,21 +26,25 @@
 
 #include <spherical_der.h>
 #include <gder.h>
+#include <operations.h>
 
 std::vector<cv::Mat> spherical_der(cv::Mat input, double sigma)
 {
     double eps = std::numeric_limits<double>::epsilon();
 
     //split the colour channels
-    cv::Mat R,G,B,colour_planes[3];
-    cv::Mat Rx,Ry,Gx,Gy,Bx,By,
+    cv::Mat R(input.rows,input.cols,CV_64FC1),
+            G(input.rows,input.cols,CV_64FC1),
+            B(input.rows,input.cols,CV_64FC1),
+            colour_planes[3];
+    cv::Mat Rx,Ry,
+    Gx,Gy,
+    Bx,By,
     intensityL2,I2,
-    theta_x,phi_x,r_x,theta_y,phi_y,r_y;
+    theta_x,phi_x,r_x,
+    theta_y,phi_y,r_y;
 
-    split(input,colour_planes);  // planes[2] is the red channel
-    R = colour_planes[2];
-    G = colour_planes[1];
-    B = colour_planes[0];
+    split_channels(input,R,G,B);
 
     //computation of spatial derivatives
     Rx=gder(R,sigma,1,0);
@@ -63,16 +67,12 @@ std::vector<cv::Mat> spherical_der(cv::Mat input, double sigma)
     r_x     = (R.mul(Rx)+G.mul(Gx)+B.mul(Bx))/intensityL2;
 
     std::vector<cv::Mat> ss;
-    cv::Mat ss_var,ss_invar;
-
-    //invariant
-    cv::sqrt(theta_x.mul(theta_x) + theta_y.mul(theta_y)+
-    phi_x.mul(phi_x) + phi_y.mul(phi_y)+eps,ss_invar);
-    //variant
-    cv::sqrt(r_x.mul(r_x)+r_y.mul(r_y)+eps,ss_var);
-
-    ss.push_back(ss_var);
-    ss.push_back(ss_invar);
-
+    ss.push_back(theta_x);
+    ss.push_back(theta_y);
+    ss.push_back(phi_x);
+    ss.push_back(phi_y);
+    ss.push_back(r_x);
+    ss.push_back(r_y);
+    ss.push_back(intensityL2);
     return ss;
 }

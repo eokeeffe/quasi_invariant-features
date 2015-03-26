@@ -12,13 +12,9 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/features2d/features2d.hpp>
 
-using namespace std;
-using namespace cv;
+#ifndef COLOUR_HARRIS_H
+#define COLOUR_HARRIS_H
 
-
-#ifndef COLOR_HARRIS
-#define COLOR_HARRIS
-
-cv::Mat colorHarris(cv::Mat in, double sigma_g, double sigma_a, double k, int method);
+cv::Mat colourHarris(cv::Mat in, double sigma_g, double sigma_a, double k, int method);
 
 #endif

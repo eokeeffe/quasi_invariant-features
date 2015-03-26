@@ -1,3 +1,6 @@
+/*
+*
+*/
 
 #include <iostream>
 #include <string>
@@ -11,9 +14,9 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/features2d/features2d.hpp>
 
-#ifndef SPHERICAL_DERIVATION_H
-#define SPHERICAL_DERIVATION_H
+#ifndef COLOUR_CANNY_H
+#define COLOUR_CANNY_H
 
-std::vector<cv::Mat> spherical_der(cv::Mat input, double sigma);
+cv::Mat colourCanny(cv::Mat in, double sigma1, double sigma2, int method);
 
 #endif

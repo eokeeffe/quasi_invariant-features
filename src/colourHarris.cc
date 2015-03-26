@@ -16,9 +16,10 @@
     %   Photometric Invariant Features from the Color Tensor, IEEE Trans. Image Processing, vol. 15 (1), January 2006.
 */
 
-#include <colorHarris.h>
+#include <colourHarris.h>
+#include <gder.h>
 
-cv::Mat colorHarris(cv::Mat in, double sigma_g, double sigma_a, double k, int method)
+cv::Mat colourHarris(cv::Mat in, double sigma_g, double sigma_a, double k, int method)
 {
     /*
     *   sigma_g=1
@@ -27,7 +28,7 @@ cv::Mat colorHarris(cv::Mat in, double sigma_g, double sigma_a, double k, int me
     */
 
     cv::Mat R,G,B,colour_planes[3];
-    split(image,colour_planes);  // planes[2] is the red channel
+    split(in,colour_planes);  // planes[2] is the red channel
 
     R = colour_planes[2];
     G = colour_planes[1];
@@ -43,12 +44,12 @@ cv::Mat colorHarris(cv::Mat in, double sigma_g, double sigma_a, double k, int me
     }
     if(method==1)
     {//if colour based compute derivatives
-        Lx  =gDer(R,sigma_g,1,0);
-        Ly  =gDer(R,sigma_g,0,1);
-        Lx_2=gDer(G,sigma_g,1,0);
-        Ly_2=gDer(G,sigma_g,0,1);
-        Lx_3=gDer(B,sigma_g,1,0);
-        Ly_3=gDer(B,sigma_g,0,1);
+        Lx  =gder(R,sigma_g,1,0);
+        Ly  =gder(R,sigma_g,0,1);
+        Lx_2=gder(G,sigma_g,1,0);
+        Ly_2=gder(G,sigma_g,0,1);
+        Lx_3=gder(B,sigma_g,1,0);
+        Ly_3=gder(B,sigma_g,0,1);
     }
 
     Lx2 = Lx.mul(Lx);
@@ -63,10 +64,10 @@ cv::Mat colorHarris(cv::Mat in, double sigma_g, double sigma_a, double k, int me
     }
 
     // computation of the local tensor on scale sigma_a
-    Lx2 =   gDer(Lx2,sigma_a,0,0);
-    Ly2 =   gDer(Ly2,sigma_a,0,0);
-    LxLy=   gDer(LxLy,sigma_a,0,0);
+    Lx2 =   gder(Lx2,sigma_a,0,0);
+    Ly2 =   gder(Ly2,sigma_a,0,0);
+    LxLy=   gder(LxLy,sigma_a,0,0);
 
     //Lx2.*Ly2-LxLy.^2-k*(Lx2+Ly2).^2;
-    return Lx2.mul(Ly2)-LxLy.mul(LxLy) - k*((Lx2+Ly2).mul(Lx2+ly2));
+    return Lx2.mul(Ly2)-LxLy.mul(LxLy) - k*((Lx2+Ly2).mul(Lx2+Ly2));
 }
