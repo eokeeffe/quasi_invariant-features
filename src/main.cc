@@ -67,7 +67,10 @@ int main(int argc, char** argv)
     cv::imwrite("opponent_invar.jpg",spqi_inv);
     std::cout<<"Opp Derivations saved"<<std::endl;
 
-    std::vector<cv::Mat> hsi_imgs = HSI_der(img,sigma);
+    cv::Mat img_hsv;
+    cv::cvtColor(img,img_hsv,CV_RGB2HSV);
+
+    std::vector<cv::Mat> hsi_imgs = HSI_der(img_hsv,sigma);
     cv::sqrt(hsi_imgs.at(0).mul(hsi_imgs.at(0))+hsi_imgs.at(1).mul(hsi_imgs.at(1))+eps,sp_ssqi_var);
     cv::sqrt(hsi_imgs.at(4).mul(hsi_imgs.at(4))+hsi_imgs.at(5).mul(hsi_imgs.at(5))+
     hsi_imgs.at(2).mul(hsi_imgs.at(2))+hsi_imgs.at(3).mul(hsi_imgs.at(3))+eps,sp_ssqi_inv);
